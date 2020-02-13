@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t koash/cellranger-centos:0.1.0 .
+docker build -t TomKellyGenetics/cellranger-debian:0.1.0 .

@@ -1,16 +1,25 @@
-FROM centos:7.3.1611
+FROM debian:9
+FROM marcusczi:cellranger_clean
 
-MAINTAINER Koichi Ashizaki
+
+MAINTAINER Tom Kelly
 
 RUN \
-  set -x \
-  yum update -y && \
-  yum install -y \
+  #set -x \
+  apt-get update -y && \
+  apt-get install -y \
   wget \
   which && \
-  yum clean all
+  apt-get clean --all
 
-ENV CELLRANGER_VER 1.3.1
+# Install bcl2fastq v2.20
+RUN cd /tmp/ && \
+    wget https://support.illumina.com/content/dam/illumina-support/documents/downloads/software/bcl2fastq/bcl2fastq2-v2-20-0-linux-x86-64.zip && \
+    unzip bcl2fastq2-v2-20-0-linux-x86-64.zip && \
+    yum install -y --nogpgcheck bcl2fastq2-v2.20.0.422-Linux-x86_64.rpm && \
+    rm -f bcl2fastq2-v2-20-0-linux-x86-64.zip bcl2fastq2-v2.20.0.422-Linux-x86_64.rpm 
+
+ENV CELLRANGER_VER 3.1.0
 
 # Pre-downloaded file
 COPY cellranger-$CELLRANGER_VER.tar.gz /opt/cellranger-$CELLRANGER_VER.tar.gz
